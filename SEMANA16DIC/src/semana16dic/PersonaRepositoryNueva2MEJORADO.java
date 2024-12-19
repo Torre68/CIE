@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-public class PersonaRepositoryNueva {
+public class PersonaRepositoryNueva2MEJORADO {
 	//CAPA DE PERSISTENCIA. En el simil del frigorifico y la lasaña, esta capa es el frigorifico.
 	static final String DB_URL = "jdbc:mysql://localhost:3306/cie1";
 	   static final String USER = "root";
@@ -53,23 +54,9 @@ public class PersonaRepositoryNueva {
 	// TODO Auto-generated catch block
 	e.printStackTrace();}
 } 
-	public ResultSet AllData () {
+	
 		
-		ResultSet rs= null;
-		try {
-			//con esto conecto a la base de datos
-			Connection conexion = DriverManager.getConnection(DB_URL, USER, PASS);
-		     // preparo la sentencia
-			Statement sentencia = conexion.createStatement();
-			//Ejecuto
-		     
-		     rs = sentencia.executeQuery("Select * from Personas");
-		}
-	 catch (SQLException e) {
-		e.printStackTrace();
-	}
-	return rs;	
-	}
+	
 public ResultSet Apellidos () {
 		
 		ResultSet rs= null;
@@ -84,7 +71,45 @@ public ResultSet Apellidos () {
 		}
 	 catch (SQLException e) {
 		e.printStackTrace();
-	}
-	return rs;	
+		
+	 }
+		return rs;
+}
+		public ArrayList<Persona> buscarTodos() {
+
+			ResultSet rs=null;
+			Connection conexion=null;
+			ArrayList<Persona> lista= new ArrayList<Persona>();
+			try {
+				//conecto a la base de datos
+				conexion = DriverManager.getConnection(DB_URL, USER, PASS);
+				//preparo la sentencia
+				Statement sentencia = conexion.createStatement();
+				//ejecuto
+				rs = sentencia.executeQuery("select * from Personas");
+				while (rs.next()) {
+					
+					Persona p= new Persona(rs.getString("nombre"),
+							rs.getString("apellidos"), rs.getInt("edad"));
+					
+					lista.add(p);
+				}
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				
+				if (conexion!=null) {
+					try {
+						conexion.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			return lista;
 }
 }

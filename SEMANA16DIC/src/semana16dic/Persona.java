@@ -34,6 +34,7 @@ public class Persona {
 		super();
 		this.nombre = nombre;
 	}
-	
+	//Dos constructores para las dos funciones, Insertar y Borrar. Borramos solo a traves de una variable, 
+	//pero al Insertar debemos insertar todas las variables requeridas.
 
 }
